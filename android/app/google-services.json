@@ -1,0 +1,49 @@
+{
+  "project_info": {
+    "project_number": "319583910449",
+    "firebase_url": "https://taller1-amii-default-rtdb.firebaseio.com",
+    "project_id": "taller1-amii",
+    "storage_bucket": "taller1-amii.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:319583910449:android:dbdced5d4941bd4df73310",
+        "android_client_info": {
+          "package_name": "com.Andy.taller2"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD4t480dSzQADIzmjlSMQ43yZbtq12QZRo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:319583910449:android:030e9da5e296a920f73310",
+        "android_client_info": {
+          "package_name": "com.andy.prueba2"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD4t480dSzQADIzmjlSMQ43yZbtq12QZRo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
