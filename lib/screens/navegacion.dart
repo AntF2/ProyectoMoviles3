@@ -48,10 +48,7 @@ class _NavegacionState extends State<Navegacion> {
             icon: Icon(Icons.category),
             label: 'Catálogo',
           ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.play_circle_filled),
-            label: 'Reproducción',
-          ),
+         
           BottomNavigationBarItem(
             icon: Icon(Icons.save),
             label: 'Guardar Película',

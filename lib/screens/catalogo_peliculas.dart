@@ -15,48 +15,108 @@ class _CatalogoScreenState extends State<CatalogoScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Catálogo de Películas'),
+        backgroundColor: Colors.deepPurple,
       ),
       body: StreamBuilder(
         stream: moviesRef.onValue,
         builder: (context, AsyncSnapshot<DatabaseEvent> snapshot) {
-          if (snapshot.hasData) {
+          // Comprobamos el estado de la conexión
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Center(child: CircularProgressIndicator());
+          } else if (snapshot.hasError) {
+            return Center(child: Text('Error: ${snapshot.error}'));
+          } else if (snapshot.hasData && snapshot.data!.snapshot.value != null) {
             List<Map<dynamic, dynamic>> movies = [];
-            if (snapshot.data!.snapshot.value != null) {
-              Map<dynamic, dynamic> values = snapshot.data!.snapshot.value as Map<dynamic, dynamic>;
-              values.forEach((key, value) {
-                print('Datos recibidos: $value'); // Depuración
-                movies.add(value as Map<dynamic, dynamic>);
-              });
+            Map<dynamic, dynamic> values = snapshot.data!.snapshot.value as Map<dynamic, dynamic>;
+            values.forEach((key, value) {
+              print('Datos recibidos: $value'); // Depuración
+              movies.add(value as Map<dynamic, dynamic>);
+            });
+            print('Total de películas: ${movies.length}'); // Depuración
+
+            if (movies.isEmpty) {
+              return Center(child: Text('No hay películas disponibles.'));
             }
-            return ListView.builder(
+
+            return PageView.builder(
               itemCount: movies.length,
               itemBuilder: (BuildContext context, int index) {
                 String title = movies[index]['titulo'] ?? 'Título desconocido';
-                String link = movies[index]['director'] ?? 'Director desconocido';
-                String link1 = movies[index]['director'] ?? 'Director desconocido';
-                
+                String link = movies[index]['link'] ?? 'link desconocido';
+                String description = movies[index]['descripcion'] ?? 'Sin descripción';
+                String imageUrl = movies[index]['imagen'] ?? 'https://via.placeholder.com/150';
 
-           
-
-                return ListTile(
-                  title: Text(title),
-                  subtitle: Text(link1),
-                  onTap: link.isNotEmpty ? () {
-                    
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => ReproduccionScreen(videoUrl: link),
-                      ),
-                    );
-                  } : null,
+                return Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Card(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(15.0),
+                    ),
+                    elevation: 5,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        ClipRRect(
+                          borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(15.0),
+                            topRight: Radius.circular(15.0),
+                          ),
+                          child: Image.network(
+                            imageUrl,
+                            height: 200,
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(16.0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                title,
+                                style: TextStyle(
+                                  fontSize: 24,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              SizedBox(height: 8),
+                              Text(
+                                description,
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  color: Colors.grey[600],
+                                ),
+                              ),
+                              SizedBox(height: 8),
+                              link.isNotEmpty
+                                  ? ElevatedButton(
+                                      onPressed: () {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) => ReproduccionScreen(videoUrl: link),
+                                          ),
+                                        );
+                                      },
+                                      child: Text('Ver Película'),
+                                      style: ElevatedButton.styleFrom(
+                                        backgroundColor: Colors.deepPurple,
+                                        foregroundColor: Colors.white,
+                                      ),
+                                    )
+                                  : Container(),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
                 );
               },
             );
-          } else if (snapshot.hasError) {
-            return Center(child: Text('Error: ${snapshot.error}'));
+          } else {
+            return Center(child: Text('No hay películas disponibles.'));
           }
-          return Center(child: CircularProgressIndicator());
         },
       ),
     );
