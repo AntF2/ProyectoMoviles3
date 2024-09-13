@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
 
 class InicioScreen extends StatelessWidget {
-  const InicioScreen({Key? key});
+  const InicioScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           gradient: LinearGradient(
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
-            colors: [Colors.blue.shade900, Colors.blue.shade400],
+            colors: [Color.fromARGB(255, 33, 33, 34), Color.fromARGB(255, 71, 74, 78)],
           ),
         ),
         child: Center(
@@ -21,7 +21,7 @@ class InicioScreen extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                  '¡Bienvenido a NESTFLIS!',
+                  '¡Bienvenido a MUSIC-PRO+!',
                   style: TextStyle(
                     fontSize: 40,
                     fontWeight: FontWeight.bold,
@@ -30,21 +30,21 @@ class InicioScreen extends StatelessWidget {
                       Shadow(
                         blurRadius: 10.0,
                         color: Colors.black.withOpacity(0.5),
-                        offset: Offset(2, 2),
+                        offset: const Offset(2, 2),
                       ),
                     ],
                   ),
                   textAlign: TextAlign.center,
                 ),
-                SizedBox(height: 20),
-                Icon(
-                  Icons.movie,
+                const SizedBox(height: 20),
+                const Icon(
+                  Icons.audio_file,
                   size: 120,
                   color: Colors.white,
                 ),
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
                 Text(
-                  'En NESTFLIS, nos apasiona el cine tanto como a ti. Nuestra misión es ser tu destino principal para descubrir, disfrutar y debatir sobre las películas que amas y las que aún no has descubierto. Aquí, encontrarás una comunidad vibrante de cinéfilos que comparten tu amor por el séptimo arte.',
+                  'Descubre música nueva, crea playlists y disfruta de tus canciones favoritas.Sumérgete en una experiencia musical única, donde cada nota te conecta.¡Es hora de darle play a tu vida! 🎶',
                   style: TextStyle(
                     fontSize: 18,
                     color: Colors.white.withOpacity(0.9),
@@ -52,7 +52,7 @@ class InicioScreen extends StatelessWidget {
                       Shadow(
                         blurRadius: 10.0,
                         color: Colors.black.withOpacity(0.5),
-                        offset: Offset(2, 2),
+                        offset: const Offset(2, 2),
                       ),
                     ],
                   ),

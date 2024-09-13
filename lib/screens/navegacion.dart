@@ -2,10 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:taller1_flutter/screens/catalogo_peliculas.dart';
 import 'package:taller1_flutter/screens/guardarpelicula.dart';
 import 'package:taller1_flutter/screens/inicio.dart';
-import 'package:taller1_flutter/screens/reproduccion.dart';
 
 class Navegacion extends StatefulWidget {
-  const Navegacion({Key? key}) : super(key: key);
+  const Navegacion({super.key});
 
   @override
   _NavegacionState createState() => _NavegacionState();
@@ -15,10 +14,9 @@ class _NavegacionState extends State<Navegacion> {
   int _currentIndex = 0;
 
   final List<Widget> _screens = [
-    InicioScreen(),
-    CatalogoScreen(),
-    
-    Guardarpelicula(),
+    const InicioScreen(),
+    const CatalogoScreen(),
+    const Guardarpelicula(), // Asegúrate de que este nombre coincide con el nombre de la clase en guardarpelicula.dart
   ];
 
   void _onTabTapped(int index) {
@@ -37,8 +35,8 @@ class _NavegacionState extends State<Navegacion> {
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _currentIndex,
         onTap: _onTabTapped,
-        selectedItemColor: Colors.blue, // Color del ícono y texto seleccionado
-        unselectedItemColor: Colors.grey, // Color del ícono y texto no seleccionado
+        selectedItemColor: Colors.blue,
+        unselectedItemColor: const Color.fromARGB(255, 48, 48, 48),
         items: const [
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
@@ -48,10 +46,9 @@ class _NavegacionState extends State<Navegacion> {
             icon: Icon(Icons.category),
             label: 'Catálogo',
           ),
-         
           BottomNavigationBarItem(
-            icon: Icon(Icons.save),
-            label: 'Guardar Película',
+            icon: Icon(Icons.music_note),
+            label: 'PlayList',
           ),
         ],
       ),

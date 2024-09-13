@@ -1,59 +1,70 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:taller1_flutter/firebase_options.dart';
+import 'firebase_options.dart'; // Asegúrate de que esta ruta sea correcta
 import 'package:taller1_flutter/screens/loginScreen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-  runApp(MyApp());
+  try {
+    await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  } catch (e) {
+    print("Error initializing Firebase: $e");
+  }
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Aplicación Móvil',
+      title: 'FLUTTER APLICACIÓN',
       theme: ThemeData(
         primarySwatch: Colors.blue,
         elevatedButtonTheme: ElevatedButtonThemeData(
           style: ElevatedButton.styleFrom(
-            foregroundColor: Colors.white, backgroundColor: Colors.blue,
-            padding: EdgeInsets.symmetric(vertical: 14, horizontal: 24),
-            textStyle: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(10),
+            foregroundColor: Colors.white,
+            backgroundColor: Colors.grey[800], // Cambia el botón a un gris más oscuro
+            padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 24),
+            textStyle: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            shape: const RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(Radius.circular(10)),
             ),
           ),
         ),
       ),
-      home: PruebaPage(),
+      home: const PruebaPage(),
     );
   }
 }
 
 class PruebaPage extends StatelessWidget {
+  const PruebaPage({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.grey[900], // Fondo gris
       appBar: AppBar(
-        title: Text('Prueba', style: TextStyle(fontSize: 20)),
+        title: const Text('Prueba', style: TextStyle(fontSize: 20, color: Colors.white)),
+        backgroundColor: Colors.grey[850], // Fondo de AppBar en gris oscuro
       ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
-            Text(
-              'Nombre: Andy Tituaña',
-              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Colors.blue),
+            const Text(
+              'APLICACIÓN',
+              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Colors.white), // Texto en blanco
             ),
-            SizedBox(height: 20),
-            Text(
-              'Usuario de GitHub: AndyPT1907',
-              style: TextStyle(fontSize: 18, color: Colors.blue),
+            const SizedBox(height: 20),
+            const Text(
+              'GRUPO 2',
+              style: TextStyle(fontSize: 18, color: Colors.white), // Texto en blanco
             ),
-            SizedBox(height: 40),
+            const SizedBox(height: 40),
             ElevatedButton(
               onPressed: () {
                 Navigator.push(
@@ -61,7 +72,7 @@ class PruebaPage extends StatelessWidget {
                   MaterialPageRoute(builder: (context) => LoginPage()),
                 );
               },
-              child: Text('Iniciar Sesión'),
+              child: const Text('Iniciar Sesión'),
             ),
           ],
         ),

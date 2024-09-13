@@ -3,45 +3,67 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:taller1_flutter/screens/catalogo_peliculas.dart';
 
 class Guardarpelicula extends StatefulWidget {
+  const Guardarpelicula({super.key});
+
   @override
   _GuardarpeliculaState createState() => _GuardarpeliculaState();
 }
 
 class _GuardarpeliculaState extends State<Guardarpelicula> {
-  final databaseReference = FirebaseDatabase.instance.ref();
-  final TextEditingController _titleController = TextEditingController();
-  final TextEditingController _directorController = TextEditingController();
+  final _titleController = TextEditingController();
+  final _descriptionController = TextEditingController();
+  final _ratingController = TextEditingController();
 
-  void saveMovie() {
-    String title = _titleController.text;
-    String director = _directorController.text;
+  final DatabaseReference moviesRef = FirebaseDatabase.instance.ref().child('canciones');
 
-    databaseReference.child('movies').push().set({
-      'titulo': title,
-      'director': director,
-    });
+  Future<void> _saveMovie() async {
+    final title = _titleController.text;
+    final description = _descriptionController.text;
+    final rating = double.tryParse(_ratingController.text) ?? 0.0;
 
-    _titleController.clear();
-    _directorController.clear();
+    if (title.isEmpty || description.isEmpty || rating <= 0.0) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Please fill in all fields with valid data')),
+      );
+      return;
+    }
 
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text('Película guardada correctamente')),
-    );
-  }
+    try {
+      await moviesRef.push().set({
+        'titulo': title,
+        'descripcion': description,
+        'calificacion': rating,
+        'imagen': 'https://via.placeholder.com/150', // Imagen por defecto
+        'link': '', // Link vacío por defecto
+      });
 
-  void viewMovies() {
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => CatalogoScreen()),
-    );
+      _titleController.clear();
+      _descriptionController.clear();
+      _ratingController.clear();
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Movie saved successfully')),
+      );
+
+      // Navegar a la pantalla de catálogo
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => const CatalogoScreen()),
+      );
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Failed to save movie')),
+      );
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Agregar Película'),
-        backgroundColor: Colors.deepPurple, // Color de fondo del AppBar
+        title: const Text('Guardar Canción'),
+        backgroundColor: Colors.grey[850],
+        foregroundColor: Colors.white,
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -51,28 +73,61 @@ class _GuardarpeliculaState extends State<Guardarpelicula> {
             TextField(
               controller: _titleController,
               decoration: InputDecoration(
-                labelText: 'Título de la película',
+                labelText: 'Título',
+                labelStyle: const TextStyle(color: Colors.white),
                 border: OutlineInputBorder(),
+                filled: true,
+                fillColor: Colors.grey[800],
+                prefixIcon: Icon(Icons.title, color: Colors.white),
               ),
+              style: const TextStyle(color: Colors.white),
             ),
-            SizedBox(height: 12.0),
+            const SizedBox(height: 16.0),
             TextField(
-              controller: _directorController,
+              controller: _descriptionController,
               decoration: InputDecoration(
-                labelText: 'Director',
+                labelText: 'Descripción',
+                labelStyle: const TextStyle(color: Colors.white),
                 border: OutlineInputBorder(),
+                filled: true,
+                fillColor: Colors.grey[800],
+                prefixIcon: Icon(Icons.description, color: Colors.white),
               ),
+              maxLines: 3,
+              style: const TextStyle(color: Colors.white),
             ),
-            SizedBox(height: 20.0),
+            const SizedBox(height: 16.0),
+            TextField(
+              controller: _ratingController,
+              decoration: InputDecoration(
+                labelText: 'Calificación (de 1 a 10)',
+                labelStyle: const TextStyle(color: Colors.white),
+                border: OutlineInputBorder(),
+                filled: true,
+                fillColor: Colors.grey[800],
+                prefixIcon: Icon(Icons.star, color: Colors.white),
+              ),
+              keyboardType: const TextInputType.numberWithOptions(decimal: true),
+              style: const TextStyle(color: Colors.white),
+            ),
+            const SizedBox(height: 20.0),
             ElevatedButton(
-              onPressed: saveMovie,
-              child: Text('Guardar Película'),
-              style: ElevatedButton.styleFrom(
-                foregroundColor: Colors.white, backgroundColor: Colors.deepPurple,   // Color del texto del botón
-                padding: EdgeInsets.symmetric(vertical: 16),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8.0),
+              onPressed: _saveMovie,
+              style: ButtonStyle(
+                backgroundColor: MaterialStateProperty.all<Color>(Colors.grey[700]!),
+                foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
+                padding: MaterialStateProperty.all<EdgeInsets>(
+                  const EdgeInsets.symmetric(vertical: 15),
                 ),
+                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                  RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10.0),
+                  ),
+                ),
+              ),
+              child: const Text(
+                'Guardar',
+                style: TextStyle(fontSize: 18),
               ),
             ),
           ],
